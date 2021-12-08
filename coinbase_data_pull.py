@@ -1,34 +1,20 @@
 import cbpro
 import pandas as pd
+import numpy as np
 import datetime
 
 c = cbpro.PublicClient()
 
 all_products = c.get_products()
-print(all_products[0:3])
-
 usd_products = []
-tradable_products = []
-not_tradable_products = []
+
+# Get all USD tradable products
 for product in all_products:
     id_output = product.get('id')
     if "USD" == id_output[-3:]:
         usd_products.append(id_output)
-        trade_disabled = product.get("trading_disabled")
-        if trade_disabled:
-            not_tradable_products.append(id_output)
-        elif trade_disabled == False:
-            tradable_products.append(id_output)
 
-print("tradable products")
-print(tradable_products)
-print("------------------------------------------")
-
-print("not tradable products")
-print(not_tradable_products)
-print("------------------------------------------")
-
-
+# Fuction to pull data for one pair
 def pull_all_daily_data(ticker):
     
     end_date = datetime.date(2021, 11, 6)
@@ -56,10 +42,14 @@ def pull_all_daily_data(ticker):
     output_data['Date'] = pd.to_datetime(output_data['Date'], unit='s')
     return output_data
 
+# Loop over all identified USD pairs and pull dialy price data
 for ticker_input in usd_products:
     print(ticker_input)
+    # skipping uma because throws an error when returning data
     if ticker_input == "UMA-USD":
         continue
+
+    # Write out daily data
     daily_data_df = pull_all_daily_data(ticker = ticker_input)
     daily_data_df.to_csv("./daily_data/" + ticker_input + "_daily_data.csv")
 
