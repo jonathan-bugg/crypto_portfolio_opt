@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from os import listdir
 from os.path import isfile, join
@@ -33,4 +34,13 @@ price_df_open = price_df.drop_duplicates()
 price_df_long = price_df_open.pivot(index = 'Date', columns = 'coin', values = 'Close').dropna()
 
 returns = price_df_long.pct_change()
+
+for coin in coins_to_trade[0:2]:
+    print(coin)
+    returns_series = returns[coin] + 1
+    print(np.prod(returns_series) - 1)
+
+print((price_df_long.iloc[-1] - price_df_long.iloc[0])/price_df_long.iloc[0])
+exit()
+print(np.sum(returns.mean()))
 print(returns)
