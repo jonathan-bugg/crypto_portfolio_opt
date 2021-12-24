@@ -17,7 +17,7 @@ for product in all_products:
 # Fuction to pull data for one pair
 def pull_all_daily_data(ticker):
     
-    end_date = datetime.date(2021, 11, 6)
+    end_date = datetime.date(2021, 12, 20)
     delta_300 = datetime.timedelta(300)
     delta_1 = datetime.timedelta(1)
 
@@ -45,11 +45,12 @@ def pull_all_daily_data(ticker):
 # Loop over all identified USD pairs and pull dialy price data
 for ticker_input in usd_products:
     print(ticker_input)
-    # skipping uma because throws an error when returning data
-    if ticker_input == "UMA-USD":
-        continue
-
-    # Write out daily data
-    daily_data_df = pull_all_daily_data(ticker = ticker_input)
-    daily_data_df.to_csv("./daily_data/" + ticker_input + "_daily_data.csv")
+    
+    # Skipping some tickers because they do not pull data but show up in the products we pulled ealier
+    try:
+        # Write out daily data
+        daily_data_df = pull_all_daily_data(ticker = ticker_input)
+        daily_data_df.to_csv("./daily_data/" + ticker_input + "_dec_21_2021_daily_data.csv")
+    except:
+        print("BAD TICKER:  " + ticker_input)
 
