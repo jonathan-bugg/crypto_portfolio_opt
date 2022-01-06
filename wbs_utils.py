@@ -1,6 +1,8 @@
 # This file contians functions used within the main data analysis script
 import numpy as np 
 import math
+import pandas as pd
+
 
 # # Function to calculate the cumulative sum statistic defiend in the Wild Binary Segmentation Paper
 # def cusum_stat(timeseries, s, e, b):
